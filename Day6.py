@@ -16,7 +16,7 @@ for i in range(len(data)):
             print("part 2:", i)
             break
 
-# # 16 minutes. meh. Good to know about sets.
+# 16 minutes. meh. Good to know about sets.
 
 
 #nthistle solution:
