@@ -1,3 +1,5 @@
+# Advent of Code 2022 Day 6
+
 data = open('6.in').read()
 lines = [x for x in data.split('\n')]
 print(data)
