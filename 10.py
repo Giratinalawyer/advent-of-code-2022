@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-# Advent of Code 2022 Day _
+# Advent of Code 2022 Day 10
 
 from copy import deepcopy
 import numpy as np
