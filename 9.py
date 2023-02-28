@@ -51,4 +51,4 @@ for line in lines:
 visits.add(tuple(a[i+1]))
 print("total unique visits by tail for %i rope knots:" % (n), len(visits))
 
-# not bad. 40 minutes for part 1, 15 for part 2
+# not bad. 40 minutes for part 1, 15 for part 2!
