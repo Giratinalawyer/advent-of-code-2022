@@ -1,13 +1,15 @@
 #! /usr/bin/env python3
 
 # Advent of Code 2022 Day 12
+# Note!: must delete last line of 12.in if you want this to work. Jonathan Paulson's solution *does* work with the blank line. Somehow.
+
 
 import string
 from copy import deepcopy
 import numpy as np
 from collections import defaultdict, deque
 
-data = open('12.in').read()
+data = open('12.in').read().strip()
 m = [x for x in data.split('\n')] #map
 
 visited = {} #all interior visited locations
