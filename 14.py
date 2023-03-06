@@ -37,109 +37,77 @@ widths = [x[0] for x in filled]
 width = max(widths) - min(widths)+2
 height = max(heights)
 
-sand = deepcopy(filled)
-i = 0
-
-space = True
-while True:
-    space = True
-    sand.add((500,0))
-    locx = 500
-    locy = 0
-    turns = 0
-    while space:
-        turns += 1
-        if locy >= max(heights):
-            break
-        elif not((locx,locy + 1) in sand):
-            sand.add((locx,locy+1))
-            sand.remove((locx,locy))
-            locy = locy + 1
-        elif not((locx-1,locy+1) in sand):
-            sand.add((locx-1,locy+1))
-            sand.remove((locx,locy))
-            locx = locx -1
-            locy = locy +1
-        elif not((locx+1,locy+1) in sand):
-            sand.add((locx+1,locy+1))
-            sand.remove((locx,locy))
-            locx, locy = locx +1, locy +1
-        else:
-            sand.add((locx,locy))
-            space = False
-    if locy >= max(heights):
-        break
-    i += 1
-
-print("Part 1:",i)
-
-# part 2:
 for m in range(height*2):
     filled.add((m+500,height+2))
     filled.add((-m+500,height+2))
 
-sand2 = deepcopy(filled)
-i = 0
-while True:
-    space = True
-    sand2.add((500,0))
-    locx = 500
-    locy = 0
-    turns = 0
-    while space:
-        turns += 1
-        if not((locx,locy + 1) in sand2):
-            sand2.add((locx,locy+1))
-            sand2.remove((locx,locy))
-            locy = locy + 1
-        elif not((locx-1,locy+1) in sand2):
-            sand2.add((locx-1,locy+1))
-            sand2.remove((locx,locy))
-            locx = locx -1
-            locy = locy +1
-        elif not((locx+1,locy+1) in sand2):
-            sand2.add((locx+1,locy+1))
-            sand2.remove((locx,locy))
-            locx, locy = locx +1, locy +1
-        else:
-            sand2.add((locx,locy))
-            space = False
-        if locy == 0:
+def sanding(cave: set, pt: int):
+    sand = deepcopy(cave)
+    i = 0
+    while True:
+        space = True
+        sand.add((500,0))
+        locx = 500
+        locy = 0
+        turns = 0
+        while space:
+            turns += 1
+            if pt == 1 and locy >= height:
+                break
+            elif not((locx,locy + 1) in sand):
+                sand.add((locx,locy+1))
+                sand.remove((locx,locy))
+                locy = locy + 1
+            elif not((locx-1,locy+1) in sand):
+                sand.add((locx-1,locy+1))
+                sand.remove((locx,locy))
+                locx = locx -1
+                locy = locy +1
+            elif not((locx+1,locy+1) in sand):
+                sand.add((locx+1,locy+1))
+                sand.remove((locx,locy))
+                locx, locy = locx +1, locy +1
+            else:
+                sand.add((locx,locy))
+                space = False
+            if pt == 2:
+                if locy == 0:
+                    break
+        if pt == 1 and locy >= height:
             break
-    i += 1
-    if locy == 0:
-        break
-
-for (p,j) in sand2:
-    if j < 5:
-        print((p,j))
-print(i)
-
+        i += 1
+        if pt == 2 and locy == 0:
+            break
+    return i,sand
 
 # Visualization stuff:
 
-# #a[] is purely for visualization
-# a = []
-# for i in range(height+1):
-#     a.append([])
-#     for j in range(width+1):
-#         a[i].append("*")
+#a[] is purely for visualization
+a = []
+for i in range(height+4):
+    a.append([])
+    for j in range(width+1):
+        a[i].append("*")
 
-# for (j,i) in filled:
-#     if i == 0:
-#         a[i-min(heights)][j-min(widths)+1] = "S"
-#     else:
-#         a[i-min(heights)][j-min(widths)+1] = "#"
-# for i,j in enumerate(a):
-#     print("".join(j))
+for (j,i) in filled:
+    if i == 0:
+        a[i-min(heights)][j-min(widths)+1] = "S"
+    elif -1 < i-min(heights) < len(a) and -1 < j-min(widths)+1 < len(a[0]):
+        a[i-min(heights)][j-min(widths)+1] = "#"
+for i,j in enumerate(a):
+    print("".join(j))
 
-# print("\n")
+print("\n")
 
-#more visualization stuff
-# for (m,n) in sand:
-#     if not(m,n) in filled:
-#         a[n-min(heights)][m-min(widths)+1] = "O"
-# for p,q in enumerate(a):
-#     print("".join(q))
+# more visualization stuff
+for (m,n) in sanding(filled,1)[1]:
+    if not(m,n) in filled:
+        a[n-min(heights)][m-min(widths)+1] = "O"
+for p,q in enumerate(a):
+    print("".join(q))
 
-# print("locy:",locy)
+
+print("Answers:")
+print("part 1:", sanding(filled,1)[0])
+print("part 2:", sanding(filled,2)[0])
+
