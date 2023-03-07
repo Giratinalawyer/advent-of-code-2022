@@ -60,6 +60,8 @@ for x in range(0,4000001)
             if taxicab((x,y),k) <= taxicab(k,pairs[k]:
                 further = 0
                 break
+        if further = 0:
+            break
     if further and (x,y) not in beacset:
         ans = (x,y)
         break
