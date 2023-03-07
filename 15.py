@@ -2,15 +2,16 @@
 
 # Advent of Code 2022 Day 15
 
-dirs = [(0,1),(1,0),(0,-1),(-1,0)]
+dirs = [(-1,1),(1,1),(1,-1),(-1,-1)]
 import string
 from copy import deepcopy
 import math
 import numpy as np
 from collections import defaultdict, deque
 from functools import cmp_to_key
-print("dog")
+import time
 
+start = time.time()
 data = open('15.in').read().strip()
 lines = [x for x in data.split('\n')]
 
@@ -33,39 +34,58 @@ def taxicab(src, dest):
     return abs(src[0]-dest[0])+abs(src[1]-dest[1])
 
 max_d = max([taxicab(k,pairs[k]) for k in pairs.keys()])
-print("max_d:",max_d)
+
+bds = dict() # beacon distances
+for k in pairs.keys():
+    bds[k] = taxicab(k,pairs[k])
 
 beacset = set()
 for v in pairs.values():
     beacset.add(v)
+
 pos = 0
+timesetup = time.time()
+print("time leading up to part 1 loop:", timesetup - start)
 for x in range(x_min - max_d, x_max+max_d+1, 1): #includes going further in dirxns that edgemost beacons/sensors!
 #would be nice if this loop ran faster
     further = 0
     for k in pairs.keys():
-        if taxicab((x,row),k) <= taxicab(k,pairs[k]):
-            # print((x,row))
-            # print("source:",k)
+        if taxicab((x,row),k) <= bds[k]:
             further = 1
             break
     if further and (x,row) not in beacset:
         pos += 1
-print("number of cases:",pos)
+print("part 1:",pos)
+time1 = time.time()
+print("time for part 1:", time1-timesetup)
 
 #part 2:
-ans = ()
-for x in range(4000001):
-    for y in range (4000001):
-        further = 1
-        for k in pairs.keys():
-            if taxicab((x,y),k) <= taxicab(k,pairs[k]):
-                further = 0
+found = False
+for k in pairs.keys(): #damn. 3.7 seconds!
+    #this loop was taken from Jpaulson after mine was taking forever.
+    for dx in range(bds[k]+2):
+        dy = bds[k]-dx+1
+        for signx,signy in dirs:
+            x = k[0]+(dx*signx)
+            y = k[1]+(dy*signy)
+            if not(0 <= x <=4000000 and 0 <= y <= 4000000):
+                continue
+            valid = True
+            for k in pairs.keys():
+                dxy = taxicab((x,y),k)
+                if dxy <=bds[k]:
+                    valid = False
+                    break
+            if valid:
+                found = True
+                print("part 2:", 4000000*x+y)
                 break
-        if further == 0:
+        if found:
             break
-    if further and (x,y) not in beacset:
-        ans = (x,y)
+    if found:
         break
-print(4000000*ans[0] + ans[1])
 
-# will probably need to make this faster. best guess so far is make a set of all tuples which cannot contain a beacon, then check in the range
+#old loop involved adding all edge members to a set and then removing those that were not valid. I guess that takes a while to do compared to this format.
+
+time2 = time.time()
+print("time for part 2:", time2-time1)
