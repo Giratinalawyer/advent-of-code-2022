@@ -50,38 +50,3 @@ for x in range(x_min - max_d, x_max+max_d+1, 1): #includes going further in dirx
     if further and (x,row) not in beacset:
         pos += 1
 print("number of cases:",pos)
-
-#  and (x,row) not in pairs.values()
-
-# data = open("15.in").read().strip()
-# lines = [x for x in data.split('\n')]
-
-# S = set()
-# B = set()
-# sum_d = 0
-# for line in lines:
-#     words = line.split()
-#     sx,sy = words[2],words[3]
-#     bx,by = words[8],words[9]
-#     sx = int(sx[2:-1])
-#     sy = int(sy[2:-1])
-#     bx = int(bx[2:-1])
-#     by = int(by[2:])
-#     d = abs(sx-bx) + abs(sy-by)
-#     sum_d += d
-#     S.add((sx,sy,d))
-#     B.add((bx,by))
-
-# def valid(x,y,S):
-#     for (sx,sy,d) in S:
-#         dxy = abs(x-sx)+abs(y-sy)
-#         if dxy<=d:
-#             return False
-#     return True
-
-# p1 = 0
-# for x in range(-int(1e7),int(1e7)):
-#     y = int(2e6)
-#     if not valid(x,y,S) and (x,y) not in B:
-#         p1 += 1
-# print(p1)
