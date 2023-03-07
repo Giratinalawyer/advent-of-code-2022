@@ -39,6 +39,7 @@ for v in pairs.values():
     beacset.add(v)
 pos = 0
 for x in range(x_min - max_d, x_max+max_d+1, 1): #includes going further in dirxns that edgemost beacons/sensors!
+#would be nice if this loop ran faster
     further = 0
     for k in pairs.keys():
         if taxicab((x,row),k) <= taxicab(k,pairs[k]):
