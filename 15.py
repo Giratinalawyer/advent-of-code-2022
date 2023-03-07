@@ -50,3 +50,19 @@ for x in range(x_min - max_d, x_max+max_d+1, 1): #includes going further in dirx
     if further and (x,row) not in beacset:
         pos += 1
 print("number of cases:",pos)
+
+#part 2:
+ans = ()
+for x in range(0,4000001)
+    for y in range (0,4000001):
+        further = 1
+        for k in pairs.keys():
+            if taxicab((x,y),k) <= taxicab(k,pairs[k]:
+                further = 0
+                break
+    if further and (x,y) not in beacset:
+        ans = (x,y)
+        break
+print(4000000*ans[0] + ans[1])
+
+# will probably need to make this faster. best guess so far is make a set of all tuples which cannot contain a beacon, then check in the range
