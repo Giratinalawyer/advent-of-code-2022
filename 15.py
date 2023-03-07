@@ -9,6 +9,7 @@ import math
 import numpy as np
 from collections import defaultdict, deque
 from functools import cmp_to_key
+print("dog")
 
 data = open('15.in').read().strip()
 lines = [x for x in data.split('\n')]
@@ -53,14 +54,14 @@ print("number of cases:",pos)
 
 #part 2:
 ans = ()
-for x in range(0,4000001)
-    for y in range (0,4000001):
+for x in range(4000001):
+    for y in range (4000001):
         further = 1
         for k in pairs.keys():
-            if taxicab((x,y),k) <= taxicab(k,pairs[k]:
+            if taxicab((x,y),k) <= taxicab(k,pairs[k]):
                 further = 0
                 break
-        if further = 0:
+        if further == 0:
             break
     if further and (x,y) not in beacset:
         ans = (x,y)
