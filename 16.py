@@ -1,25 +1,23 @@
 #! /usr/bin/env python3
 
 # Advent of Code 2022 Day 16
-# Tried using PyPy on this one, didn't really work + didn't recognize some of my imports (numpy, aoc_tools)
+# Tried using PyPy on this one, looks like it did speed stuff up when needed to do subset checking at beginning of solve() for part 1
+# but it didn't seem to like numpy or regex, so would want to solve that if trying to use it in the future
 #should learn re.findall too
 
 dirs = [(-1,1),(1,1),(1,-1),(-1,-1)]
 import string
 from copy import deepcopy
 import math
-import numpy as np
+# import numpy as np
 from collections import defaultdict, deque
 from functools import cmp_to_key
 import time
-from aoc_tools import *
+# from aoc_tools import *
 
 start = time.time()
-data = open('16ex.in').read().strip()
+data = open('16.in').read().strip()
 lines = [x for x in data.split('\n')]
-
-# Valve AW has flow rate=0; tunnels lead to valves LG, TL
-# Valve OM has flow rate=0; tunnels lead to valves XK, IM
 
 flows = {}
 tunnels = {}
@@ -32,24 +30,23 @@ for entry in lines:
     tunnels[valve] = leads
 print(flows)
 print(tunnels)
-# print(valves['AA'][0])
-# print([valves[x][0] for x in valves.keys()])
 
 def solve(flow, tunnel): #pretty much all taken from Cancamussa AKA carrdelling (https://github.com/carrdelling/AdventOfCode2022/blob/main/day16/silver.py)
     # similar philosophy to my approach's attempt, just obviously implemented much more correctly.
-    states = [(1, 'AA',0,'')]
+    states = [(1, 'AA',0,("zzz",))]
     seen = {}
+    seen_valves = {}
     best = 0
 
     while len(states) > 0:
         current = states.pop()
-        # print(current)
         time, where, score, opened_s = current
         opened = {x for x in opened_s}
         
-        if seen.get((time,where), -1) >= score: # apparently dict[] will raise keyerror if key does not exist, but .get() returns second arg if that happens (so should generally use .get)
+        if seen.get((time,where), -1) >= score and opened.issubset(seen_valves.get((time,where),-1)): # apparently dict[] will raise keyerror if key does not exist, but .get() returns second arg if that happens (so should generally use .get)
             continue
         seen[(time,where)] = score
+        seen_valves[(time,where)] = opened
 
         if time == 30:
             best = max(best,score)
@@ -58,14 +55,13 @@ def solve(flow, tunnel): #pretty much all taken from Cancamussa AKA carrdelling 
         # if we open the valve here
         if flow[where] > 0 and where not in opened:
             opened.add(where)
-            # print(valves.get(where))[0]
             new_score = score + sum(flow.get(where, 0) for where in opened)
             new_state = (time + 1, where, new_score, tuple(opened))
 
             states.append(new_state)
             opened.discard(where)
     
-    #if we don't open a valve here
+        #if we don't open a valve here
         new_score = score + sum(flow.get(where,0) for where in opened)
         for option in tunnel.get(where):
             new_state = (time + 1, option, new_score, tuple(opened))
@@ -77,7 +73,9 @@ print(solve(flows,tunnels))
 end = time.time()
 print(end-start)
 
-# Your first attempt - main problems are runtime, and also probably horrible recursive function semantics
+
+
+# Your first attempt for part 1: - main problems are runtime, and also probably horrible recursive function semantics
 # def get_paths(path, time): #recursive function 
 # # for checking all 30-valve paths
 #     # print(path)
