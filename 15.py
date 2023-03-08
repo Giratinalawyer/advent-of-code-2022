@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 # Advent of Code 2022 Day 15
-
+# learn z3 constrain solver at some point, and pypy
 dirs = [(-1,1),(1,1),(1,-1),(-1,-1)]
 import string
 from copy import deepcopy
